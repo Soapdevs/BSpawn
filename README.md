@@ -1,3 +1,3 @@
 # BSpawn
 a minecraft plugin that adds some spawn options
-https://bukkit.org/threads/spawn-heal-clearinv-plugin.498521/
+Has been used by Balanced Guild!
