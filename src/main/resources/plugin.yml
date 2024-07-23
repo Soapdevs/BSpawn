@@ -1,7 +1,7 @@
 name: BSpawn
 version: '${project.version}'
-main: me.labstorm.bspawn.Main
-api-version: 1.18
+main: etc.soap.bspawn.Main
+api-version: 1.21
 commands:
   setspawn:
     permission: spawn.admin.setspawn
