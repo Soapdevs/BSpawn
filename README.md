@@ -1,3 +1,6 @@
 # BSpawn
-a minecraft plugin that adds some spawn options
-https://bukkit.org/threads/spawn-heal-clearinv-plugin.498521/
+a minecraft plugin that adds some spawn options such as spawn on join 
+
+Do /bspawn for commands
+
+Has been used by my server Balanced Guild!
