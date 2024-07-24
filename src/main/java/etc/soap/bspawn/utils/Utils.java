@@ -11,32 +11,32 @@ import java.util.Objects;
 
 public class Utils {
 
-    public static void spawnLogic(Player p, boolean forceTp) {
+    public static void spawnLogic(Player player, boolean forceTp) {
         if (Main.CLEAR_INV) {
-            p.getInventory().clear();
+            player.getInventory().clear();
         }
 
         if (Main.HEAL_PLAYER) {
-            p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getDefaultValue());
-            p.setFoodLevel(20);
+            player.setHealth(Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getDefaultValue());
+            player.setFoodLevel(20);
         }
 
         if (forceTp || Main.TP_PLAYER) {
-            p.teleport(Main.SPAWN_LOCATION);
+            player.teleport(Main.SPAWN_LOCATION);
         }
     }
 
-    public static void onSpawnCommand(Player p) {
+    public static void onSpawnCommand(Player player) {
         YamlConfiguration config = Main.getConfiguration();
-        List<?> commands = config.getList("on-spawn-command");
-        if (commands == null) {
+        List<String> commands = config.getStringList("on-spawn-command");
+        if (commands == null || commands.isEmpty()) {
             return;
         }
-        for (Object c : commands) {
-            Bukkit.getServer()
-                  .dispatchCommand(Bukkit.getConsoleSender(),
-                                   String.valueOf(c).replace("%player%", p.getDisplayName()));
+        for (String command : commands) {
+            Bukkit.getServer().dispatchCommand(
+                    Bukkit.getConsoleSender(),
+                    command.replace("%player%", player.getDisplayName())
+            );
         }
     }
-
 }

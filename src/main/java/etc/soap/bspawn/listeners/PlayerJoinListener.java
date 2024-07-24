@@ -11,17 +11,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class PlayerJoinListener implements Listener {
 
     @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
         if (Main.SPAWN_LOCATION == null) {
-            if (p.hasPermission("spawn.admin.setspawn")) {
-                p.sendMessage(ChatColor.RED + "Please set the server-spawn with /setspawn !");
+            if (player.hasPermission("spawn.admin.setspawn")) {
+                player.sendMessage(ChatColor.RED + "Please set the server spawn with /setspawn!");
             } else {
-                p.sendMessage(ChatColor.RED + "There is a configuration error, please notify the server owner.");
+                player.sendMessage(ChatColor.RED + "There is a configuration error, please notify the server owner.");
             }
             return;
         }
-        Utils.spawnLogic(p, false);
+        Utils.spawnLogic(player, false);
     }
 }
-

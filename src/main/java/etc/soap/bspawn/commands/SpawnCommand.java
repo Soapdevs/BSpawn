@@ -19,36 +19,34 @@ public class SpawnCommand implements CommandExecutor {
 
         if (Main.SPAWN_LOCATION == null) {
             if (sender.hasPermission("spawn.admin.setspawn")) {
-                sender.sendMessage(ChatColor.RED + "Please set the server-spawn with /setspawn !");
+                sender.sendMessage(ChatColor.RED + "Please set the server spawn with /setspawn!");
             } else {
                 sender.sendMessage(ChatColor.RED + "There is a configuration error, please notify the server owner.");
             }
             return true;
         }
 
-        if (args.length == 0) {
-            Player p = ((Player) sender).getPlayer();
-            assert p != null;
-            Utils.spawnLogic(p, true);
-            Utils.onSpawnCommand(p);
-            sender.sendMessage(ChatColor.GOLD + "Teleporting to spawn...");
+        Player player = (Player) sender;
 
+        if (args.length == 0) {
+            Utils.spawnLogic(player, true);
+            Utils.onSpawnCommand(player);
+            sender.sendMessage(ChatColor.GOLD + "Teleporting to spawn...");
         } else if (args.length == 1) {
-            if (!sender.hasPermission("permisson: spawn.admin.others")) {
+            if (!sender.hasPermission("spawn.admin.others")) {
                 sender.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
                 return true;
             }
-            Player p = Bukkit.getPlayer(args[0]);
-            if (p == null) {
-                sender.sendMessage(ChatColor.RED + "The player " + args[0] + "was not found!");
+            Player targetPlayer = Bukkit.getPlayer(args[0]);
+            if (targetPlayer == null) {
+                sender.sendMessage(ChatColor.RED + "The player " + args[0] + " was not found!");
                 return true;
             }
-            Utils.spawnLogic(p, true);
-            Utils.onSpawnCommand(p);
+            Utils.spawnLogic(targetPlayer, true);
+            Utils.onSpawnCommand(targetPlayer);
             sender.sendMessage(ChatColor.GOLD + "Teleporting " + args[0] + " to spawn...");
-
         } else {
-            sender.sendMessage(ChatColor.RED + "Unknown command please use: /spawn [<player>]");
+            sender.sendMessage(ChatColor.RED + "Unknown command. Please use: /spawn [<player>]");
         }
 
         return true;

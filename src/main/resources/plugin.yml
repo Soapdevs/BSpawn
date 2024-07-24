@@ -1,7 +1,7 @@
 name: BSpawn
 version: '${project.version}'
 main: etc.soap.bspawn.Main
-api-version: 1.21
+api-version: 1.19
 commands:
   setspawn:
     permission: spawn.admin.setspawn

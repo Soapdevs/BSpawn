@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 
@@ -29,11 +30,16 @@ public final class Main extends JavaPlugin {
     }
 
     public static void reload() {
-        YamlConfiguration config = confObj.getConfig();
-        CLEAR_INV = config.getBoolean("clear-inventory-on-spawn");
-        HEAL_PLAYER = config.getBoolean("heal-player-on-spawn");
-        TP_PLAYER = config.getBoolean("send-player-to-spawn-on-join");
-        SPAWN_LOCATION = config.getLocation("spawn-location");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                YamlConfiguration config = confObj.getConfig();
+                CLEAR_INV = config.getBoolean("clear-inventory-on-spawn");
+                HEAL_PLAYER = config.getBoolean("heal-player-on-spawn");
+                TP_PLAYER = config.getBoolean("send-player-to-spawn-on-join");
+                SPAWN_LOCATION = config.getLocation("spawn-location");
+            }
+        }.runTaskAsynchronously(getInstance());
     }
 
     public static Config getConfObj() {
@@ -51,7 +57,12 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        confObj.save();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                confObj.save();
+            }
+        }.runTaskAsynchronously(this);
     }
 
     @Override
@@ -59,7 +70,7 @@ public final class Main extends JavaPlugin {
         confObj = new Config();
         Main.reload();
         if (Main.SPAWN_LOCATION == null) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Please set the server-spawn with /setspawn !");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Please set the server spawn with /setspawn!");
         }
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerJoinListener(), this);
@@ -68,5 +79,4 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand());
         Objects.requireNonNull(getCommand("reloadspawnconfig")).setExecutor(new ReloadCommand());
     }
-
 }

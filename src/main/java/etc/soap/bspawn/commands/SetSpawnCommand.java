@@ -15,22 +15,24 @@ public class SetSpawnCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "This command can only be executed by a Player!");
             return true;
         }
+
         if (args.length != 0) {
-            sender.sendMessage(ChatColor.RED + "Unknown command please use: /setspawn");
+            sender.sendMessage(ChatColor.RED + "Unknown command. Please use: /setspawn");
             return true;
         }
-        if (!sender.hasPermission("spawn.admin.setspawn")) {
+
+        Player player = (Player) sender;
+        if (!player.hasPermission("spawn.admin.setspawn")) {
             sender.sendMessage(ChatColor.RED + "You don't have the permissions to do that!");
             return true;
         }
 
-        Player p = ((Player) sender).getPlayer();
-        assert p != null;
         YamlConfiguration config = Main.getConfiguration();
-        config.set("spawn-location", p.getLocation());
+        config.set("spawn-location", player.getLocation());
         Main.getConfObj().save();
         Main.reload();
-        sender.sendMessage(ChatColor.GREEN + "Spawn Set!");
+
+        sender.sendMessage(ChatColor.GREEN + "Spawn set!");
         return true;
     }
 }

@@ -10,14 +10,19 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class PlayerRespawnListener implements Listener {
 
     @EventHandler
-    public void onPlayerRespawnEvent(PlayerRespawnEvent e) {
-        e.setRespawnLocation(Main.SPAWN_LOCATION);
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        event.setRespawnLocation(Main.SPAWN_LOCATION);
         new BukkitRunnable() {
             @Override
             public void run() {
-                Utils.spawnLogic(e.getPlayer(), false);
+                // Schedule the task to run on the main thread to ensure thread safety with Bukkit API calls
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Utils.spawnLogic(event.getPlayer(), false);
+                    }
+                }.runTask(Main.getInstance());
             }
-        }.runTaskLater(Main.getInstance(), 1);
+        }.runTaskLaterAsynchronously(Main.getInstance(), 1);
     }
-
 }
